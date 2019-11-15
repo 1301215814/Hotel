@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.demo.mapper.JdPermissionMapper" >
+  <resultMap id="BaseResultMap" type="com.qf.demo.pojo.JdPermission" >
+    <id column="permission_id" property="permissionId" jdbcType="INTEGER" />
+    <result column="per_name" property="perName" jdbcType="VARCHAR" />
+    <result column="menu_name" property="menuName" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <resultMap id="RoleMap" type="com.qf.demo.pojo.JdPermission" extends="BaseResultMap">
+    <collection property="user" ofType="com.qf.demo.pojo.JdUser">
+      <id column="uid" property="uid"/>
+      <result column="uname" property="uname"/>
+    </collection>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    permission_id, per_name, menu_name
+  </sql>
+
+  <select id="findPermByLoginName" resultMap="BaseResultMap" resultType="com.qf.demo.pojo.JdPermission" parameterType="string">
+    select
+    p.permission_id,p.per_name,p.menu_name
+    from
+    jd_user u,jd_role r,jd_permission p,jd_role_permission rp
+    where
+    u.rid=r.rid and r.rid=rp.rid and rp.permission_id=p.permission_id
+    and u.uname=#{uname}
+  </select>
+
+  <select id="findPermissionById" resultMap="BaseResultMap">
+   select
+    p.permission_id,p.per_name,p.menu_name
+   from
+   jd_user u,jd_role r,jd_permission p,jd_role_permission rp
+   where
+   u.rid=r.rid and r.rid=rp.rid and rp.permission_id=p.permission_id and u.uid=#{uid}
+  </select>
+
+  <select id="findNotPermissionById" resultMap="BaseResultMap">
+   select
+   p.permission_id,p.per_name,p.menu_name
+   from
+   jd_user u,jd_role r,jd_permission p,jd_role_permission rp
+   where
+   u.rid=r.rid and r.rid=rp.rid and rp.permission_id=p.permission_id
+   and p.permission_id not in (select
+   p.permission_id
+   from
+   jd_user u,jd_role r,jd_permission p,jd_role_permission rp
+   where
+   u.rid=r.rid and r.rid=rp.rid and rp.permission_id=p.permission_id and u.uid=#{uid})
+  </select>
+
+</mapper>

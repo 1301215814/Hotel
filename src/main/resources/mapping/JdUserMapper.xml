@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.demo.mapper.JdUserMapper" >
+  <resultMap id="BaseResultMap" type="com.qf.demo.pojo.JdUser" >
+    <id column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="upassword" property="upassword" jdbcType="VARCHAR" />
+    <result column="uphone" property="uphone" jdbcType="VARCHAR" />
+    <result column="uname" property="uname" jdbcType="VARCHAR" />
+    <result column="uemail" property="uemail" jdbcType="VARCHAR" />
+    <result column="rid" property="rid" jdbcType="INTEGER" />
+    <result column="usex" property="usex" jdbcType="INTEGER" />
+    <result column="uidcard" property="uidcard" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <resultMap id="GetRoleMap" type="com.qf.demo.pojo.JdUser" extends="BaseResultMap" >
+    <collection property="permission" ofType="com.qf.demo.pojo.JdPermission">
+      <result column="menu_name" property="menuName"/>
+    </collection>
+  </resultMap>
+
+    <resultMap id="OrderAndRoom" type="com.qf.demo.pojo.JdUser">
+        <id column="uid" property="uid" jdbcType="INTEGER" />
+        <result column="upassword" property="upassword" jdbcType="VARCHAR" />
+        <result column="uphone" property="uphone" jdbcType="VARCHAR" />
+        <result column="uname" property="uname" jdbcType="VARCHAR" />
+        <result column="uemail" property="uemail" jdbcType="VARCHAR" />
+        <result column="rid" property="rid" jdbcType="INTEGER" />
+        <result column="usex" property="usex" jdbcType="INTEGER" />
+        <result column="uidcard" property="uidcard" jdbcType="VARCHAR" />
+        <collection property="rooms" ofType="com.qf.demo.pojo.JdRoom">
+            <id column="roid" property="roId" jdbcType="INTEGER" />
+            <result column="roname" property="roName" jdbcType="VARCHAR" />
+            <result column="stid" property="stid" jdbcType="VARCHAR" />
+        </collection>
+        <collection property="states" ofType="com.qf.demo.pojo.JdState">
+            <result column="stname" property="stname" jdbcType="VARCHAR" />
+        </collection>
+        <collection property="orders" ofType="com.qf.demo.pojo.JdOrder">
+            <result column="ophone" property="ophone" jdbcType="VARCHAR" />
+            <result column="oname" property="oname" jdbcType="VARCHAR" />
+            <result column="oidcard" property="oidcard" jdbcType="VARCHAR" />
+            <result column="ointime" property="ointime" jdbcType="VARCHAR" />
+            <result column="oouttime" property="oouttime" jdbcType="VARCHAR" />
+        </collection>
+    </resultMap>
+
+
+
+
+
+    <resultMap id="OrderAndRoom2" type="com.qf.demo.pojo.JdRoom">
+        <id column="roid" property="roId" jdbcType="INTEGER" />
+        <result column="roname" property="roName" jdbcType="VARCHAR" />
+        <result column="stid" property="stid" jdbcType="VARCHAR" />
+
+        <collection property="users" ofType="com.qf.demo.pojo.JdUser">
+
+            <id column="uid" property="uid" jdbcType="INTEGER" />
+            <result column="upassword" property="upassword" jdbcType="VARCHAR" />
+            <result column="uphone" property="uphone" jdbcType="VARCHAR" />
+            <result column="uname" property="uname" jdbcType="VARCHAR" />
+            <result column="uemail" property="uemail" jdbcType="VARCHAR" />
+            <result column="rid" property="rid" jdbcType="INTEGER" />
+            <result column="usex" property="usex" jdbcType="INTEGER" />
+            <result column="uidcard" property="uidcard" jdbcType="VARCHAR" />
+        </collection>
+        <collection property="states" ofType="com.qf.demo.pojo.JdState">
+            <result column="stname" property="stname" jdbcType="VARCHAR" />
+        </collection>
+        <collection property="orders" ofType="com.qf.demo.pojo.JdOrder">
+            <result column="ophone" property="ophone" jdbcType="VARCHAR" />
+            <result column="oname" property="oname" jdbcType="VARCHAR" />
+            <result column="oidcard" property="oidcard" jdbcType="VARCHAR" />
+            <result column="ointime" property="ointime" jdbcType="VARCHAR" />
+            <result column="oouttime" property="oouttime" jdbcType="VARCHAR" />
+        </collection>
+    </resultMap>
+
+
+
+
+
+
+    <resultMap id="UserAndRole" type="com.qf.demo.pojo.JdUser">
+        <id column="uid" property="uid" jdbcType="INTEGER" />
+        <result column="upassword" property="upassword" jdbcType="VARCHAR" />
+        <result column="uphone" property="uphone" jdbcType="VARCHAR" />
+        <result column="uname" property="uname" jdbcType="VARCHAR" />
+        <result column="uemail" property="uemail" jdbcType="VARCHAR" />
+        <result column="rid" property="rid" jdbcType="INTEGER" />
+        <result column="usex" property="usex" jdbcType="INTEGER" />
+        <result column="uidcard" property="uidcard" jdbcType="VARCHAR" />
+        <collection property="roles" ofType="com.qf.demo.pojo.JdRole">
+            <id column="rid" property="rid" jdbcType="INTEGER" />
+            <result column="rname" property="rname" jdbcType="VARCHAR" />
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+    uid, upassword, uphone, uname, uemail, rid, usex, uidcard
+  </sql>
+
+    <insert id="insert" parameterType="com.qf.demo.pojo.JdUser" >
+    insert into jd_user (uid, upassword, uphone,
+      uname, uemail, rid,
+      usex, uidcard)
+    values (#{uid,jdbcType=INTEGER}, #{upassword,jdbcType=VARCHAR}, #{uphone,jdbcType=VARCHAR},
+      #{uname,jdbcType=VARCHAR}, #{uemail,jdbcType=VARCHAR}, #{rid,jdbcType=INTEGER},
+      #{usex,jdbcType=INTEGER}, #{uidcard,jdbcType=VARCHAR})
+  </insert>
+
+
+  <select id="findUserByName" resultType="com.qf.demo.pojo.JdUser" parameterType="string">
+    select uid,upassword,uphone,uname,uemail,rid,usex,uidcard from jd_user
+    where uname=#{uname}
+  </select>
+  
+  <select id="findUserType" resultType="java.lang.Integer" parameterType="string">
+        select rid from jd_user where uname=#{uname} and upassword=#{upassword}
+  </select>
+
+  <select id="findPermission" resultMap="GetRoleMap">
+   select
+   u.uid,u.uname,u.rid,p.menu_name
+   from
+   jd_user u,jd_role r,jd_permission p,jd_role_permission rp
+   where
+   u.rid=r.rid and r.rid=rp.rid and rp.permission_id=p.permission_id
+   order by u.uid
+  </select>
+
+
+    <select id="selectUserById" resultType="com.qf.demo.pojo.JdUser" parameterType="java.lang.Integer" >
+    select * from jd_user where uid=#{uid,jdbcType=INTEGER}
+
+  </select>
+    <!---->
+    <select id="selectByExample" resultMap="UserAndRole" parameterType="com.qf.demo.pojo.JdUser">
+    select u1.uid,upassword,uphone,uname,uemail,r1.rname,usex,uidcard from jd_user u1,jd_role r1
+    where u1.rid=r1.rid and r1.rid=4
+
+  </select>
+    <!---->
+    <select id="selectByExample2" resultMap="UserAndRole" parameterType="com.qf.demo.pojo.JdUser">
+    select u1.uid,upassword,uphone,uname,uemail,r1.rname,usex,uidcard from jd_user u1,jd_role r1
+where u1.rid=r1.rid and r1.rid!=4
+
+  </select>
+
+    <select id="roomselect" resultMap="OrderAndRoom" parameterType="com.qf.demo.pojo.JdRoom">
+    select r1.roid,r1.roname,s1.stname,o1.uname,o1.oidcard,o1.ointime,o1.oouttime,o1.ophone
+    from jd_room r1
+    left join jd_state s1 on r1.stid = s1.stid
+    left join jd_room_order ro1 on r1.roid = ro1.roid
+    left join jd_order o1 on ro1.oid = o1.oid
+
+  </select>
+
+    <delete id="deleteUserById" parameterType="java.lang.Integer" >
+    delete from jd_user
+    where uid = #{uid,jdbcType=INTEGER}
+  </delete>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.qf.demo.pojo.JdUser" >
+        update jd_user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="uname!=null">uname=#{uname},</if>
+            <if test="upassword!=null">upassword=#{upassword},</if>
+            <if test="uemail!=null">uemail=#{uemail},</if>
+            <if test="uphone!=null">uphone=#{uphone},</if>
+            <if test="usex!=null">usex=#{usex},</if>
+            <if test="uidcard!=null">uidcard=#{uidcard},</if>
+        </trim>
+        where uid=#{uid}
+    </update>
+
+    <update id="updateStaff" parameterType="com.qf.demo.pojo.JdUser" >
+        update jd_user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="rid!=null">rid=#{rid},</if>
+        </trim>
+        where uid=#{uid}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.qf.demo.pojo.JdUser" >
+    update jd_user
+    set upassword = #{upassword,jdbcType=VARCHAR},
+      uphone = #{uphone,jdbcType=VARCHAR},
+      uname = #{uname,jdbcType=VARCHAR},
+      uemail = #{uemail,jdbcType=VARCHAR},
+      rid = #{rid,jdbcType=INTEGER},
+      usex = #{usex,jdbcType=INTEGER},
+      uidcard = #{uidcard,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=INTEGER}
+  </update>
+</mapper>

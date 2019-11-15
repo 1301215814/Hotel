@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.demo.mapper.JdRoomMapper" >
+    <resultMap id="Room_List" type="com.qf.demo.pojo.JdRoom">
+        <id column="roid" property="roId" jdbcType="INTEGER" />
+        <result column="rowifi" property="roWifi" jdbcType="INTEGER" />
+        <result column="roshower" property="roShower" jdbcType="INTEGER" />
+        <result column="rowindow" property="roWindow" jdbcType="INTEGER" />
+        <result column="robreakfast" property="roBreakfast" jdbcType="INTEGER" />
+        <result column="robed" property="roBed" jdbcType="VARCHAR" />
+        <result column="romen" property="roMen" jdbcType="INTEGER" />
+        <result column="roarea" property="roArea" jdbcType="INTEGER" />
+        <result column="roname" property="roName" jdbcType="VARCHAR" />
+        <result column="stid" property="stid" jdbcType="INTEGER" />
+    </resultMap>
+
+    <resultMap id="BaseResultMap" type="com.qf.demo.pojo.JdRoom" extends="Room_List">
+        <collection property="states" ofType="com.qf.demo.pojo.JdState">
+            <id column="stid" property="stid" jdbcType="INTEGER" />
+            <result column="stname" property="stname" jdbcType="VARCHAR" />
+        </collection>
+    </resultMap>
+
+
+
+    <sql id="Base_List">
+        roid, rowifi, roshower, rowindow, robreakfast, robed, romen, roarea, roname, stid
+    </sql>
+    <select id="selectRoom" resultMap="Room_List">
+        select
+        <include refid="Base_List"/>
+        from jd_room
+    </select>
+
+    <select id="roomselectQ" resultMap="BaseResultMap" parameterType="com.qf.demo.pojo.JdRoomExample" >
+         select r1.roid,r1.roname,s1.stname from jd_room r1 join jd_state s1 on r1.stid=s1.stid
+    </select>
+
+
+    <select id="selectRoomById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select * from jd_room
+    where roid = #{roId,jdbcType=INTEGER}
+  </select>
+
+    <update id="updateState" parameterType="com.qf.demo.pojo.JdRoom">
+        update jd_room
+        <trim prefix="set" suffixOverrides=",">
+
+            <if test="stid!=null">stid=#{stid}</if>
+
+    </trim>
+        where roid=#{roId}
+    </update>
+
+
+</mapper>
