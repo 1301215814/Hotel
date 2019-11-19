@@ -971,7 +971,20 @@
 
 <script src="js/script.js"></script>
 
-
+	<script>
+		(function(w, d, s, g, o) {
+			var x = document.createElement(s)
+					,s = document.getElementsByTagName(s)[0];
+			w[g] = o;
+			x.async = true;
+			x.charset = 'utf-8';
+			x.src = 'https://cdn.xiankefu.com/dist/xiankefu.js';
+			s.parentNode.insertBefore(x, s);
+		})(window, document, 'script', 'XIANKEFU_GLOBAL', {
+			bid: 'e43081cba4e4cc5e4c0f278221dc11aa'
+			,csid: '5f6d34cb8d6d3ccee8d87c01c2a5f532'
+		});
+	</script>
 
 </body>
 

@@ -170,6 +170,8 @@ where u1.rid=r1.rid and r1.rid!=4
             <if test="uphone!=null">uphone=#{uphone},</if>
             <if test="usex!=null">usex=#{usex},</if>
             <if test="uidcard!=null">uidcard=#{uidcard},</if>
+            <if test="rid!=null">rid=#{rid},</if>
+
         </trim>
         where uid=#{uid}
     </update>
